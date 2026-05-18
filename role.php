@@ -24,9 +24,23 @@ $message = "";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $role_demande = $_POST["role_demande"];
-    $code = $_POST["code"];
+    $code = $_POST["code"] ?? "";
 
-    if ($role_demande == "organisateur" && $code == "1234") {
+    if ($role_demande == "participant") {
+
+        $requete = $bdd->prepare("
+            UPDATE utilisateurs
+            SET role = 'participant'
+            WHERE id = ?
+        ");
+
+        $requete->execute([$_SESSION["utilisateur_id"]]);
+
+        $_SESSION["role"] = "participant";
+
+        $message = "Vous êtes maintenant participant.";
+
+    } elseif ($role_demande == "organisateur" && $code == "1234") {
 
         $requete = $bdd->prepare("
             UPDATE utilisateurs
@@ -61,50 +75,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 ?>
 
-<h1>Gestion du rôle</h1>
-
-<p>
-    Votre rôle actuel :
-    <strong><?php echo $_SESSION["role"]; ?></strong>
-</p>
-
-<?php
-if ($message != "") {
-    echo "<p>$message</p>";
-}
-?>
-
-<h2>Devenir organisateur</h2>
-
-<form method="post" action="role.php">
-
-    <input type="hidden" name="role_demande" value="organisateur">
-
-    <label>Code organisateur :</label><br>
-    <input type="password" name="code" required><br><br>
-
-    <button type="submit">
-        Devenir organisateur
-    </button>
-
-</form>
-
-<br><br>
-
-<h2>Devenir administrateur</h2>
-
-<form method="post" action="role.php">
-
-    <input type="hidden" name="role_demande" value="administrateur">
-
-    <label>Code administrateur :</label><br>
-    <input type="password" name="code" required><br><br>
-
-    <button type="submit">
-        Devenir administrateur
-    </button>
-</form>
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -114,7 +84,62 @@ if ($message != "") {
 </head>
 
 <body>
-    <a href="reglages.php">Réglages</a>
-</body>
 
+    <header>
+        <a href="reglages.php">Retour aux réglages</a>
+    </header>
+
+    <h1>Gestion du rôle</h1>
+
+    <p>
+        Votre rôle actuel :
+        <strong><?php echo $_SESSION["role"]; ?></strong>
+    </p>
+
+    <?php
+    if ($message != "") {
+        echo "<p>$message</p>";
+    }
+    ?>
+
+    <h2>Redevenir participant</h2>
+
+    <form method="post" action="role.php">
+        <input type="hidden" name="role_demande" value="participant">
+
+        <button type="submit">
+            Redevenir participant
+        </button>
+    </form>
+
+    <br><br>
+
+    <h2>Devenir organisateur</h2>
+
+    <form method="post" action="role.php">
+        <input type="hidden" name="role_demande" value="organisateur">
+
+        <label>Code organisateur :</label><br>
+        <input type="password" name="code" required><br><br>
+
+        <button type="submit">
+            Devenir organisateur
+        </button>
+    </form>
+
+    <br><br>
+
+    <h2>Devenir administrateur</h2>
+
+    <form method="post" action="role.php">
+        <input type="hidden" name="role_demande" value="administrateur">
+
+        <label>Code administrateur :</label><br>
+        <input type="password" name="code" required><br><br>
+
+        <button type="submit">
+            Devenir administrateur
+        </button>
+    </form>
+</body>
 </html>
