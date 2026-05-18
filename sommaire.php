@@ -59,8 +59,8 @@ $evenements = $requete->fetchAll(PDO::FETCH_ASSOC);
 <body>
 
 <header>
-    <a href="sommaire.php">
-        VICTOR<span class="point">.</span>
+    <a href="reglages.php">
+       Profil
     </a>
 </header>
 
