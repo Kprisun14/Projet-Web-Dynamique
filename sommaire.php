@@ -1,10 +1,45 @@
 <?php
 session_start();
 
-if (!isset($_SESSION["utilisateur_id"])) {
-    header("Location: index.php");
-    exit();
+try {
+    $bdd = new PDO("mysql:host=localhost;dbname=projet2526;charset=utf8", "root", "root");
+    $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (Exception $e) {
+    die("Erreur de connexion : " . $e->getMessage());
 }
+
+/* =========================
+   FILTRES DE RECHERCHE
+========================= */
+
+$date = isset($_GET["date"]) ? $_GET["date"] : "";
+$categorie = isset($_GET["categorie"]) ? $_GET["categorie"] : "";
+$association = isset($_GET["association"]) ? $_GET["association"] : "";
+
+$sql = "SELECT * FROM evenements WHERE 1=1";
+$params = [];
+
+if (!empty($date)) {
+    $sql .= " AND date_evenement = ?";
+    $params[] = $date;
+}
+
+if (!empty($categorie)) {
+    $sql .= " AND categorie = ?";
+    $params[] = $categorie;
+}
+
+if (!empty($association)) {
+    $sql .= " AND association LIKE ?";
+    $params[] = "%" . $association . "%";
+}
+
+$sql .= " ORDER BY date_creation DESC";
+
+$requete = $bdd->prepare($sql);
+$requete->execute($params);
+
+$evenements = $requete->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -12,70 +47,184 @@ if (!isset($_SESSION["utilisateur_id"])) {
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="sommaire.css">
+
     <title>Sommaire</title>
+
+    <link rel="stylesheet" href="sommaire.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
 
-    <header>
-        <a href="reglages.php">Réglages</a>
-    </header>
+<header>
+    <a href="sommaire.php">
+        VICTOR<span class="point">.</span>
+    </a>
+</header>
 
-    <h1 class="titre">OmnesEvent</h1>
+<!-- =========================
+     MENU
+========================= -->
 
-<div class="menu-categories">
+<nav class="menu-navigation">
 
-    <div class="dropdown">
-        <button class="dropbtn">Événements</button>
+    <a href="#">Événements</a>
 
-        <div class="dropdown-content">
-            <a href="#">Concerts</a>
-            <a href="#">Conférences</a>
-            <a href="#">Tournois</a>
-        </div>
-    </div>
+    <a href="#">Équipes sportives</a>
 
-    <div class="dropdown">
-        <button class="dropbtn">Équipes sportives</button>
+    <a href="#">Asso's culturelles</a>
 
-        <div class="dropdown-content">
-            <a href="#">Football</a>
-            <a href="#">Basket</a>
-            <a href="#">Volleyball</a>
-        </div>
-    </div>
+</nav>
 
-    <div class="dropdown">
-        <button class="dropbtn">Asso's culturelles</button>
+<!-- =========================
+     RECHERCHE
+========================= -->
 
-        <div class="dropdown-content">
-            <a href="#">Musique</a>
-            <a href="#">Cinéma</a>
-            <a href="#">Art</a>
-        </div>
-    </div>
+<div class="barre-recherche">
+
+    <form method="get" action="">
+
+        <input type="date" name="date">
+
+        <select name="categorie">
+
+            <option value="">Toutes les catégories</option>
+
+            <option value="Soirée">Soirée</option>
+
+            <option value="Sport">Sport</option>
+
+            <option value="Culture">Culture</option>
+
+        </select>
+
+        <input 
+            type="text" 
+            name="association" 
+            placeholder="Association"
+        >
+
+        <button type="submit">
+            Rechercher
+        </button>
+
+        <?php if (
+            isset($_SESSION["role"]) &&
+            (
+                $_SESSION["role"] === "organisateur" ||
+                $_SESSION["role"] === "administrateur"
+            )
+        ) : ?>
+
+            <a href="creation_evenement.php" class="btn-plus">
+                +
+            </a>
+
+        <?php endif; ?>
+
+    </form>
 
 </div>
-<form method="get" action="evenements.php" class="form-recherche">
 
-    <label for="date">Date :</label>
-    <input type="date" name="date" id="date">
+<!-- =========================
+     EVENEMENTS
+========================= -->
 
-    <label for="categorie">Catégorie :</label>
-    <select name="categorie" id="categorie">
-        <option value="">Toutes</option>
-        <option value="Soirée">Soirée</option>
-        <option value="Sport">Sport</option>
-        <option value="Culture">Culture</option>
-    </select>
+<section class="liste-evenements">
 
-    <label for="association">Association :</label>
-    <input type="text" name="association" id="association" placeholder="Nom de l'association">
+    <?php foreach ($evenements as $evenement) : ?>
 
-    <button type="submit">Rechercher</button>
+        <div class="card-evenement">
 
-</form>
+            <?php if (!empty($evenement["image_evenement"])) : ?>
+
+                <img
+                    src="<?= htmlspecialchars($evenement["image_evenement"]) ?>"
+                    alt="Image événement"
+                    class="image-evenement"
+                >
+
+            <?php else : ?>
+
+                <div class="image-placeholder">
+                    Aucun visuel
+                </div>
+
+            <?php endif; ?>
+
+            <div class="infos-evenement">
+
+                <h2>
+                    <?= htmlspecialchars($evenement["titre"]) ?>
+                </h2>
+
+                <p class="categorie">
+
+                    <?= htmlspecialchars($evenement["categorie"]) ?>
+
+                </p>
+
+                <p>
+
+                    <strong>Date :</strong>
+
+                    <?= htmlspecialchars($evenement["date_evenement"]) ?>
+
+                    <?php if (!empty($evenement["heure_evenement"])) : ?>
+
+                        à <?= htmlspecialchars($evenement["heure_evenement"]) ?>
+
+                    <?php endif; ?>
+
+                </p>
+
+                <p>
+
+                    <strong>Lieu :</strong>
+
+                    <?= htmlspecialchars($evenement["lieu"]) ?>
+
+                </p>
+
+                <p>
+
+                    <strong>Association :</strong>
+
+                    <?= htmlspecialchars($evenement["association"]) ?>
+
+                </p>
+
+                <p>
+
+                    <strong>Prix :</strong>
+
+                    <?= htmlspecialchars($evenement["prix"]) ?> €
+
+                </p>
+
+                <p>
+
+                    <strong>Places :</strong>
+
+                    <?= htmlspecialchars($evenement["places_max"]) ?>
+
+                </p>
+
+                <p class="description">
+
+                    <?= htmlspecialchars($evenement["description"]) ?>
+
+                </p>
+
+            </div>
+
+        </div>
+
+    <?php endforeach; ?>
+
+</section>
 
 </body>
 

@@ -1,0 +1,64 @@
+body {
+    background-color: #F5F1E6;
+    font-family: 'Raleway', sans-serif;
+    margin: 0;
+    text-align: center;
+}
+
+header {
+    font-size: 30px;
+    font-weight: bold;
+    text-align: left;
+    padding: 15px 25px;
+}
+
+header a {
+    color: black;
+    text-decoration: none;
+}
+
+.point {
+    color: #23178d;
+}
+
+h1 {
+    color: #23178d;
+    margin-top: 30px;
+}
+
+.form-evenement {
+    width: 450px;
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-evenement input,
+.form-evenement textarea,
+.form-evenement select {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-family: 'Raleway', sans-serif;
+}
+
+.form-evenement textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.form-evenement button {
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background-color: #23178d;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.message {
+    color: green;
+    font-weight: bold;
+}
