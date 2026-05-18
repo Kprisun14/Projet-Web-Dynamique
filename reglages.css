@@ -1,0 +1,115 @@
+@font-face {
+    font-family: 'Bebas';
+    src: url('Polices/Bebas_Neue/BebasNeue-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Ultra';
+    src: url('Polices/Utlra/Ultra.ttf') format('truetype');
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #F5F1E6;
+    font-family: Arial, sans-serif;
+}
+
+/* HEADER */
+
+header {
+    padding: 25px 50px;
+}
+
+header a {
+    text-decoration: none;
+    font-family: 'Bebas', sans-serif;
+    font-size: 38px;
+    color: black;
+}
+
+.point {
+    color: #23178d;
+}
+
+/* TITRE */
+
+h1 {
+    font-family: 'Ultra', sans-serif;
+    font-size: 60px;
+    margin-left: 70px;
+    margin-top: 40px;
+    margin-bottom: 50px;
+    color: #23178d;
+}
+
+/* CONTENEUR PRINCIPAL */
+
+.reglage-container {
+    width: 500px;
+
+    margin-left: 70px;
+
+    background-color: white;
+
+    padding: 40px;
+
+    border-radius: 20px;
+
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+/* INFORMATIONS */
+
+.info {
+    margin-bottom: 25px;
+}
+
+.info h2 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    color: #23178d;
+}
+
+.info p {
+    margin: 0;
+    font-size: 17px;
+    color: #555;
+}
+
+/* BOUTONS */
+
+.bouton {
+    display: inline-block;
+
+    margin-top: 20px;
+    margin-right: 15px;
+
+    padding: 14px 28px;
+
+    border-radius: 12px;
+
+    background-color: black;
+    color: white;
+
+    text-decoration: none;
+
+    font-weight: bold;
+
+    transition: 0.2s;
+}
+
+.bouton:hover {
+    background-color: #23178d;
+    transform: translateY(-2px);
+}
+
+/* BOUTON DECONNEXION */
+
+.deconnexion {
+    background-color: #c0392b;
+}
+
+.deconnexion:hover {
+    background-color: #e74c3c;
+}

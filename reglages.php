@@ -5,6 +5,7 @@ session_start();
 ?>
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="reglages.css">
     <title> Réglages </title>
 </head>
 
