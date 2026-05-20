@@ -1,64 +1,222 @@
-body {
-    background-color: #F5F1E6;
-    font-family: 'Raleway', sans-serif;
-    margin: 0;
-    text-align: center;
+/* =============================================
+   creation_evenement.css — OmnesEvent
+   Thème : Cohérence complète avec profil.css
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&display=swap');
+
+:root {
+    --blue-deep:     #1a1f6e;
+    --blue-mid:      #2d3adb;
+    --blue-light:    #e8eeff;
+
+    --violet-deep:   #3b0f8c;
+    --violet-mid:    #6c2bd9;
+    --violet-soft:   #9b59f5;
+    --violet-light:  #ede8ff;
+
+    --white:         #ffffff;
+    --off-white:     #f7f8fc;
+    --surface:       #eef0fa;
+
+    --text-primary:   #0d0f2b;
+    --text-secondary: #5a5f8a;
+    --text-muted:     #9399c4;
+
+    --gradient-accent: linear-gradient(90deg, #2d3adb, #6c2bd9);
+
+    --radius-sm:  8px;
+    --radius-md:  14px;
+    --shadow-sm:  0 2px 8px rgba(45, 58, 219, 0.08);
+    --shadow-md:  0 6px 24px rgba(45, 58, 219, 0.14);
 }
 
+/* ── Reset & Base ── */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--off-white);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding-bottom: 4rem;
+    background-image:
+        radial-gradient(ellipse 60% 40% at 10% 0%, rgba(108, 43, 217, 0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 35% at 90% 100%, rgba(45, 58, 219, 0.06) 0%, transparent 60%);
+}
+
+/* ── En-tête (Header) ── */
 header {
-    font-size: 30px;
-    font-weight: bold;
-    text-align: left;
-    padding: 15px 25px;
+    display: flex;
+    align-items: center;
+    padding: 0 2.5rem;
+    height: 64px;
+    background: var(--white);
+    border-bottom: 1px solid rgba(45, 58, 219, 0.1);
+    box-shadow: 0 2px 16px rgba(45, 58, 219, 0.07);
+    margin-bottom: 3rem;
 }
 
 header a {
-    color: black;
+    font-family: 'Outfit', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     text-decoration: none;
+    letter-spacing: -0.03em;
 }
 
-.point {
-    color: #23178d;
-}
-
+/* ── Titre principal ── */
 h1 {
-    color: #23178d;
-    margin-top: 30px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--text-primary);
+    margin-bottom: 2rem;
+    letter-spacing: -0.04em;
 }
 
+/* ── Message de succès ── */
+.message {
+    max-width: 600px;
+    margin: 0 auto 2rem auto;
+    padding: 1rem 1.5rem;
+    background-color: #def7ec;
+    color: #03543f;
+    border: 1px solid #bcf0da;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 14px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+}
+
+/* ── Conteneur du Formulaire ── */
 .form-evenement {
-    width: 450px;
-    margin: 30px auto;
+    max-width: 600px;
+    margin: 0 auto;
+    background: var(--white);
+    padding: 2.5rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(45, 58, 219, 0.08);
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 1.25rem;
 }
 
-.form-evenement input,
-.form-evenement textarea,
-.form-evenement select {
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    font-family: 'Raleway', sans-serif;
+/* ── Champs de saisie (Inputs, Select, Textarea) ── */
+.form-evenement input[type="text"],
+.form-evenement input[type="date"],
+.form-evenement input[type="time"],
+.form-evenement input[type="number"],
+.form-evenement select,
+.form-evenement textarea {
+    width: 100%;
+    padding: 14px 16px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text-primary);
+    background-color: var(--off-white);
+    border: 1px solid var(--surface);
+    border-radius: var(--radius-sm);
+    transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+    outline: none;
+}
+
+.form-evenement input::placeholder,
+.form-evenement textarea::placeholder {
+    color: var(--text-muted);
 }
 
 .form-evenement textarea {
-    min-height: 120px;
     resize: vertical;
+    min-height: 120px;
+    line-height: 1.5;
 }
 
-.form-evenement button {
-    padding: 14px;
+/* Effet au clic (Focus) */
+.form-evenement input:focus,
+.form-evenement select:focus,
+.form-evenement textarea:focus {
+    background-color: var(--white);
+    border-color: var(--blue-mid);
+    box-shadow: 0 0 0 4px rgba(45, 58, 219, 0.1);
+}
+
+/* ── Input File (Image) ── */
+.form-evenement label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: -0.5rem;
+    margin-top: 0.5rem;
+}
+
+.form-evenement input[type="file"] {
+    font-size: 13px;
+    color: var(--text-secondary);
+    padding: 10px 0;
+}
+
+.form-evenement input[type="file"]::file-selector-button {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    color: var(--blue-mid);
+    background-color: var(--blue-light);
     border: none;
-    border-radius: 12px;
-    background-color: #23178d;
-    color: white;
-    font-size: 16px;
+    padding: 8px 16px;
+    border-radius: 6px;
     cursor: pointer;
+    margin-right: 12px;
+    transition: background-color 0.2s;
 }
 
-.message {
-    color: green;
-    font-weight: bold;
+.form-evenement input[type="file"]::file-selector-button:hover {
+    background-color: #d1dcff;
+}
+
+/* ── Bouton Soumettre ── */
+.form-evenement button[type="submit"] {
+    margin-top: 1rem;
+    padding: 16px 24px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--white);
+    background: var(--gradient-accent);
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(79, 110, 255, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.form-evenement button[type="submit"]:hover {
+    box-shadow: 0 8px 24px rgba(108, 43, 217, 0.3);
+    transform: translateY(-2px);
+}
+
+.form-evenement button[type="submit"]:active {
+    transform: translateY(0);
+}
+
+/* ── Responsive Mobile ── */
+@media (max-width: 640px) {
+    .form-evenement {
+        margin: 0 1rem;
+        padding: 1.5rem;
+    }
+
+    header {
+        padding: 0 1rem;
+    }
 }

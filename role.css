@@ -1,0 +1,139 @@
+/* ============================================================
+   role.css — OmnesEvent · Gestion des Rôles
+   Scope : role.php
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
+
+:root {
+  --c-ink:      #0a0c1e;
+  --c-navy:     #111540;
+  --c-blue:     #2346F5;
+  --c-indigo:   #4318D1;
+  --c-violet:   #7B2FEF;
+  --c-white:    #FFFFFF;
+  --c-off:      #F4F5FF;
+  --c-surface:  #ECEEFF;
+  --c-border:   rgba(67,24,209,0.13);
+  --c-muted:    #7880A8;
+  --r-md: 12px; --r-lg: 20px;
+  --shadow-card: 0 2px 0 var(--c-border), 0 8px 32px rgba(35,70,245,0.06);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background-color: var(--c-off);
+  color: var(--c-ink);
+  padding: 40px 20px;
+}
+
+/* Conteneur général centré */
+.role-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 32px;
+  color: var(--c-navy);
+  margin-bottom: 10px;
+}
+
+/* Statut actuel */
+p:first-of-type {
+  font-size: 15px;
+  color: var(--c-muted);
+  margin-bottom: 25px;
+}
+
+p strong {
+  color: var(--c-white);
+  background: linear-gradient(110deg, var(--c-blue), var(--c-violet));
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  text-transform: uppercase;
+  margin-left: 5px;
+}
+
+/* Message système PHP */
+p:not(:first-of-type):not(:last-of-type) {
+  background: var(--c-surface);
+  color: var(--c-indigo);
+  padding: 14px;
+  border-radius: var(--r-md);
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 25px;
+  border: 1px solid var(--c-border);
+  text-align: center;
+}
+
+/* Cartes de formulaires */
+h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 18px;
+  color: var(--c-navy);
+  margin-top: 25px;
+  margin-bottom: 12px;
+}
+
+form {
+  background: var(--c-white);
+  padding: 20px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--c-border);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--c-muted);
+  text-transform: uppercase;
+}
+
+input[type="password"] {
+  width: 100%;
+  padding: 12px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  background-color: var(--c-off);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-sm);
+  outline: none;
+}
+
+input[type="password"]:focus {
+  background-color: var(--c-white);
+  border-color: var(--c-blue);
+}
+
+button[type="submit"] {
+  align-self: flex-start;
+  padding: 10px 20px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--c-white);
+  background-color: var(--c-navy);
+  border: none;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+button[type="submit"]:hover {
+  background-color: var(--c-blue);
+}

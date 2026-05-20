@@ -1,0 +1,317 @@
+/* =============================================
+   reservation.css — OmnesEvent · Système de Réservation
+   Thème : Alignement complet avec profil.css
+   ============================================= */
+
+/* On réutilise les mêmes variables de design */
+:root {
+    --blue-deep:     #1a1f6e;
+    --blue-mid:      #2d3adb;
+    --blue-bright:   #4f6eff;
+    --blue-light:    #e8eeff;
+
+    --violet-deep:   #3b0f8c;
+    --violet-mid:    #6c2bd9;
+    --violet-soft:   #9b59f5;
+    --violet-light:  #ede8ff;
+
+    --white:         #ffffff;
+    --off-white:     #f7f8fc;
+    --surface:       #eef0fa;
+
+    --text-primary:   #0d0f2b;
+    --text-secondary: #5a5f8a;
+    --text-muted:     #9399c4;
+
+    --gradient-hero: linear-gradient(135deg, #1a1f6e 0%, #3b0f8c 50%, #6c2bd9 100%);
+    --gradient-card: linear-gradient(160deg, #f7f8fc 0%, #eef0fa 100%);
+    --gradient-accent: linear-gradient(90deg, #2d3adb, #6c2bd9);
+
+    --radius-sm:  8px;
+    --radius-md:  14px;
+    --radius-lg:  20px;
+    --radius-xl:  28px;
+
+    --shadow-sm:  0 2px 8px rgba(45, 58, 219, 0.08);
+    --shadow-md:  0 6px 24px rgba(45, 58, 219, 0.14);
+    --shadow-lg:  0 16px 48px rgba(45, 58, 219, 0.18);
+    --shadow-violet: 0 8px 32px rgba(108, 43, 217, 0.22);
+}
+
+/* ── Reset & Base ── */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--off-white);
+    color: var(--text-primary);
+    min-height: 100vh;
+    background-image:
+        radial-gradient(ellipse 60% 40% at 10% 0%, rgba(108, 43, 217, 0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 35% at 90% 100%, rgba(45, 58, 219, 0.06) 0%, transparent 60%);
+}
+
+/* ── Navigation (Identique au profil) ── */
+.menu-categories {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0 2.5rem;
+    height: 64px;
+    background: var(--white);
+    border-bottom: 1px solid rgba(45, 58, 219, 0.1);
+    box-shadow: 0 2px 16px rgba(45, 58, 219, 0.07);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.menu-categories h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 22px !important;
+    font-weight: 700;
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-right: auto !important;
+    letter-spacing: -0.03em;
+}
+
+.dropbtn {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px !important;
+    font-weight: 500;
+    padding: 8px 20px;
+    border-radius: var(--radius-sm);
+    text-decoration: none !important;
+    color: var(--text-secondary) !important;
+    transition: background 0.2s, color 0.2s;
+}
+
+.dropbtn:hover {
+    background: var(--blue-light);
+    color: var(--blue-mid) !important;
+}
+
+/* ── Conteneur Principal ── */
+.profil-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+}
+
+/* ── Boîte de Détails de l'Événement ── */
+.profil-section {
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    border: 1px solid rgba(45, 58, 219, 0.09);
+    padding: 3rem;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Petite barre d'accentuation sur le côté gauche */
+.profil-section::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 6px;
+    background: var(--gradient-accent);
+}
+
+.profil-section h1 {
+    font-family: 'Outfit', sans-serif;
+    color: var(--text-primary);
+    letter-spacing: -0.03em;
+}
+
+/* Métadonnées de l'événement (Date, Lieu, Prix) */
+.profil-section p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profil-section p strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* Stylisation de la description */
+.profil-section .description {
+    font-size: 16px;
+    color: var(--text-primary);
+    line-height: 1.7;
+    background: var(--gradient-card);
+    border: 1px solid rgba(45, 58, 219, 0.05);
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    margin: 1.5rem 0;
+}
+
+/* ── Système de Jauge (Places restantes) ── */
+.jauge-container {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: var(--off-white);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--surface);
+}
+
+.jauge-container h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.01em;
+}
+
+.jauge-container p {
+    font-size: 14px;
+    margin-bottom: 0.5rem;
+}
+
+.jauge-container p:last-child {
+    margin-bottom: 0;
+}
+
+/* ── Alertes Flash (Succès / Échec) ── */
+.alerte {
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: var(--shadow-sm);
+    animation: slideDown 0.3s ease both;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.alerte.success {
+    background-color: #def7ec;
+    color: #03543f;
+    border: 1px solid #bcf0da;
+}
+
+.alerte.error {
+    background-color: #fde8e8;
+    color: #9b1c1c;
+    border: 1px solid #f8b4b4;
+}
+
+/* ── Bouton d'Action de Réservation ── */
+.btn-profil-action {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    padding: 14px 32px;
+    border-radius: var(--radius-md);
+    border: none;
+    cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    background: var(--gradient-accent);
+    color: var(--white);
+    box-shadow: 0 4px 20px rgba(45, 58, 219, 0.25);
+    transition: all 0.25s ease;
+}
+
+.btn-profil-action:hover {
+    box-shadow: var(--shadow-violet);
+    transform: translateY(-2px) scale(1.01);
+}
+
+.btn-profil-action:active {
+    transform: scale(0.99);
+}
+
+/* ── Badge Événement Complet ── */
+.complet-badge {
+    width: 100%;
+    text-align: center;
+    padding: 14px 32px;
+    background: linear-gradient(135deg, #e84393, #c0185a);
+    color: var(--white);
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 16px rgba(232, 67, 147, 0.25);
+    letter-spacing: 0.02em;
+    animation: pulse 2s infinite;
+}
+
+/* =============================================
+   API CARTOGRAPHIQUE (Leaflet)
+   ============================================= */
+
+.carte-container {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--surface);
+    box-shadow: 0 4px 15px rgba(45, 58, 219, 0.05);
+}
+
+.carte-interactive {
+    width: 100%;
+    height: 300px;
+    border-radius: var(--radius-md);
+    z-index: 1; /* Évite que la carte ne passe par-dessus vos menus déroulants */
+    border: 1px solid rgba(45, 58, 219, 0.1);
+}
+
+/* Personnalisation du pop-up sur la carte pour coller au thème */
+.leaflet-popup-content-wrapper {
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.leaflet-popup-content {
+    font-size: 13px;
+    color: var(--text-primary);
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.01); box-shadow: 0 6px 20px rgba(232, 67, 147, 0.35); }
+    100% { transform: scale(1); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+    .profil-container {
+        padding: 1.5rem 1rem 3rem;
+    }
+
+    .profil-section {
+        padding: 2rem 1.5rem;
+    }
+
+    .profil-section h1 {
+        font-size: 26px;
+    }
+
+    .btn-profil-action, .complet-badge {
+        font-size: 14px;
+        padding: 12px 24px;
+    }
+}

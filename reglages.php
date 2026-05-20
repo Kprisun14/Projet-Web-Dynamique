@@ -29,7 +29,7 @@ $role = $_SESSION['role']; // 'participant' ou 'organisateur'
     <meta charset="UTF-8">
     <title>Mon Espace - OmnesEvent</title>
     <link rel="stylesheet" href="sommaire.css">
-    <link rel="stylesheet" href="profil.css">
+    <link rel="stylesheet" href="reglages.css">
 </head>
 <body>
 
@@ -47,7 +47,7 @@ $role = $_SESSION['role']; // 'participant' ou 'organisateur'
         <h1 class="titre-profil">Bonjour, <?php echo htmlspecialchars($_SESSION['prenom'] . " " . $_SESSION['nom']); ?> 💻</h1>
         <p style="margin-left: 5px; color: #666;">Espace Personnel — Rôle : <strong><?php echo ucfirst($role); ?></strong></p>
 
-        <?php if ($role === 'participant'):
+        <?php if ($role === 'participant'): 
             // Requête pour les événements À VENIR (date_evenement >= aujourd'hui)
             $req_avenir = $bdd->prepare("
                 SELECT e.*, b.date_achat, b.code_billet, b.statut
@@ -82,7 +82,9 @@ $role = $_SESSION['role']; // 'participant' ou 'organisateur'
                                 <p>📍 Lieu : <?php echo htmlspecialchars($billet['lieu']); ?> — 💳 Prix : <?php echo htmlspecialchars($billet['prix']); ?>€</p>
                                 <span class="date-achat">Acheté le : <?php echo date('d/m/Y', strtotime($billet['date_achat'])); ?> | Code : <strong><?php echo htmlspecialchars($billet['code_billet']); ?></strong></span>
                             </div>
-                            <button class="btn-profil-action" onclick="alert('Code Billet : <?php echo htmlspecialchars($billet['code_billet']); ?>\nStatut : <?php echo htmlspecialchars($billet['statut']); ?>')">Télécharger le Billet</button>
+                            <a href="billet.php?code=<?php echo urlencode($billet['code_billet']); ?>" class="btn-profil-action" style="text-decoration: none; display: inline-block; text-align: center;">
+    🎟️ Voir mon billet / QR Code
+</a>
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
@@ -107,10 +109,25 @@ $role = $_SESSION['role']; // 'participant' ou 'organisateur'
                 <?php endif; ?>
             </div>
 
-        <?php elseif ($role === 'organisateur'):
-            // Requête pour voir tous les billets achetés pour les événements créés par cet organisateur
+        <?php elseif ($role === 'organisateur'): 
+            // ALERTES DE SUPPRESSION
+            if (isset($_GET['succes']) && $_GET['succes'] == 'suppression') {
+                echo "<div class='aucun-resultat' style='background-color: #def7ec; color: #03543f; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: bold;'>🗑️ L'événement a été supprimé avec succès.</div>";
+            }
+
+            // 1. Requête pour voir tous les événements CRÉÉS par cet organisateur (pour pouvoir les supprimer)
+            $req_mes_events = $bdd->prepare("
+                SELECT * FROM evenements 
+                WHERE organisateur_id = ? 
+                ORDER BY date_evenement ASC
+            ");
+            $req_mes_events->execute([$id_connecte]);
+            $mes_evenements = $req_mes_events->fetchAll(PDO::FETCH_ASSOC);
+
+
+            // 2. Requête pour voir tous les billets achetés (votre code existant des participants inscrits)
             $req_inscrits = $bdd->prepare("
-                SELECT e.titre AS evenement_titre, e.date_evenement, u.nom, u.prenom, u.email, b.date_achat, b.statut
+                SELECT e.titre AS evenement_titre, e.date_evenement, u.nom, u.prenom, u.email, b.date_achat, b.statut, b.code_billet
                 FROM billets b
                 JOIN evenements e ON b.evenement_id = e.id
                 JOIN utilisateurs u ON b.utilisateur_id = u.id
@@ -122,7 +139,47 @@ $role = $_SESSION['role']; // 'participant' ou 'organisateur'
         ?>
 
             <div class="profil-section">
-                <h2>📊 Tableau de bord de vos événements</h2>
+                <h2>📅 Gestion de mes événements</h2>
+                <p class="aucun-resultat">Consultez et gérez les événements que vous avez publiés sur la plateforme :</p>
+
+                <?php if (count($mes_evenements) > 0): ?>
+                    <table class="table-inscrits" style="margin-bottom: 20px;">
+                        <thead>
+                            <tr>
+                                <th>Titre</th>
+                                <th>Date</th>
+                                <th>Catégorie</th>
+                                <th>Places Max</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($mes_evenements as $ev): ?>
+                                <tr>
+                                    <td><strong><?php echo htmlspecialchars($ev['titre']); ?></strong></td>
+                                    <td><?php echo date('d/m/Y', strtotime($ev['date_evenement'])); ?></td>
+                                    <td><i><?php echo htmlspecialchars($ev['categorie']); ?></i></td>
+                                    <td><?php echo htmlspecialchars($ev['places_max']); ?></td>
+                                    <td>
+                                        <a href="supprimer_evenement.php?id=<?php echo $ev['id']; ?>" 
+                                           onclick="return confirm('Êtes-vous sûr de vouloir supprimer définitivement l\'événement « <?php echo addslashes($ev['titre']); ?> » ? Cela annulera tous les billets vendus.');" 
+                                           class="btn-profil-action" 
+                                           style="background: linear-gradient(135deg, #e84393, #c0185a); box-shadow: 0 4px 12px rgba(232, 67, 147, 0.2); padding: 6px 14px; font-size: 12px; text-decoration: none;">
+                                            ❌ Supprimer
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php else: ?>
+                    <p class="aucun-resultat" style="color: #ff9800;">Vous n'avez publié aucun événement pour le moment.</p>
+                <?php endif; ?>
+            </div>
+
+
+            <div class="profil-section">
+                <h2>📊 Suivi des inscriptions participants</h2>
                 <p class="aucun-resultat">Liste en temps réel des participants inscrits à vos activités :</p>
 
                 <?php if (count($inscrits) > 0): ?>
@@ -134,7 +191,7 @@ $role = $_SESSION['role']; // 'participant' ou 'organisateur'
                                 <th>Nom du Participant</th>
                                 <th>Email</th>
                                 <th>Date d'Achat</th>
-                                <th>Statut du billet</th>
+                                <th>Statut</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -145,7 +202,19 @@ $role = $_SESSION['role']; // 'participant' ou 'organisateur'
                                     <td><?php echo htmlspecialchars($inscrit['nom'] . ' ' . $inscrit['prenom']); ?></td>
                                     <td><?php echo htmlspecialchars($inscrit['email']); ?></td>
                                     <td><?php echo date('d/m/Y', strtotime($inscrit['date_achat'])); ?></td>
-                                    <td><i><?php echo htmlspecialchars($inscrit['statut']); ?></i></td>
+                                    <td style="white-space: nowrap; text-align: center; width: 200px;">
+                                        <?php if (strtolower($inscrit['statut']) === 'valide'): ?>
+                                        <a href="valider_presence.php?code=<?php echo urlencode($inscrit['code_billet']); ?>" 
+                                        class="btn-profil-action" 
+                                        style="background: #16a34a; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2); padding: 8px 16px; font-size: 12px; text-decoration: none; display: inline-block; white-space: nowrap; width: max-content; min-width: 150px; text-align: center; border-radius: 6px;">
+                                        ✅ Valider l'entrée
+                                        </a>
+    <?php else: ?>
+        <span style="background-color: #e2e8f0; color: #475569; padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: bold; display: inline-block; white-space: nowrap; width: max-content; min-width: 150px; text-align: center;">
+            ✔️ Billet Scanné
+        </span>
+    <?php endif; ?>
+</td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>

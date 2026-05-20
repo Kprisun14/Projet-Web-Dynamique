@@ -1,0 +1,114 @@
+/* =============================================
+   categories.css — OmnesEvent
+   Design pour les pages Événements, Sport et Culture
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Outfit:wght@600;700&display=swap');
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #f7f8fc;
+    margin: 0;
+    color: #0d0f2b;
+}
+
+/* --- Header et Navigation --- */
+header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 2.5rem; height: 64px; background: #ffffff;
+    border-bottom: 1px solid rgba(45, 58, 219, 0.1);
+    box-shadow: 0 2px 16px rgba(45, 58, 219, 0.07);
+}
+
+header a { text-decoration: none; font-weight: 700; color: #0d0f2b; }
+
+.menu-navigation {
+    display: flex; gap: 2rem; justify-content: center;
+    background: #ffffff; padding: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    margin-bottom: 2rem;
+}
+
+.menu-navigation a {
+    text-decoration: none; font-weight: 600; color: #5a5f8a; transition: color 0.2s;
+}
+
+.menu-navigation a:hover, .menu-navigation a.active {
+    color: #2d3adb; border-bottom: 2px solid #2d3adb; padding-bottom: 5px;
+}
+
+/* --- Bannière de la page --- */
+.page-header {
+    text-align: center; margin: 2rem 0 3rem 0;
+}
+
+
+.page-header p { color: #5a5f8a; font-size: 16px; }
+
+/* --- Grille des événements --- */
+.liste-evenements {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+}
+
+/* --- Carte Événement --- */
+.card-evenement {
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(45, 58, 219, 0.06);
+    border: 1px solid rgba(45, 58, 219, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex; flex-direction: column;
+}
+
+.card-evenement:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(108, 43, 217, 0.15);
+}
+
+.image-evenement, .image-placeholder {
+    width: 100%; height: 180px; object-fit: cover;
+}
+
+.image-placeholder {
+    background: #e8eeff; color: #2d3adb;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 14px;
+}
+
+.infos-evenement {
+    padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1;
+}
+
+.infos-evenement h2 {
+    font-family: 'Outfit', sans-serif; font-size: 20px; margin: 0 0 10px 0; color: #0d0f2b;
+}
+
+.badge-categorie {
+    display: inline-block; padding: 4px 10px; border-radius: 6px;
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    margin-bottom: 12px; align-self: flex-start;
+}
+
+.cat-sport { background: #def7ec; color: #03543f; }
+.cat-culture { background: #e8eeff; color: #2d3adb; }
+.cat-soiree { background: #fde8e8; color: #9b1c1c; }
+
+.infos-evenement p { font-size: 14px; color: #5a5f8a; margin-bottom: 8px; }
+.infos-evenement strong { color: #0d0f2b; }
+
+.description { margin-top: 10px; font-size: 13.5px; line-height: 1.5; color: #5a5f8a; flex-grow: 1; }
+
+.btn-profil-action {
+    display: block; text-align: center; margin-top: 20px; padding: 12px;
+    border-radius: 8px; background: linear-gradient(90deg, #2d3adb, #6c2bd9);
+    color: white; font-weight: 700; text-decoration: none; font-size: 14px;
+    transition: box-shadow 0.2s;
+}
+
+.btn-profil-action:hover { box-shadow: 0 4px 15px rgba(108, 43, 217, 0.3); }

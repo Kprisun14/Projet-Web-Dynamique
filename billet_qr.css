@@ -1,0 +1,629 @@
+/* ============================================================
+   billet_qr.css — OmnesEvent · Billet & Scanner
+   Scope : billet.php · scanner.php
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --c-ink:      #0a0c1e;
+  --c-navy:     #111540;
+  --c-blue:     #2346F5;
+  --c-indigo:   #4318D1;
+  --c-violet:   #7B2FEF;
+  --c-lavender: #B89BFF;
+  --c-white:    #FFFFFF;
+  --c-off:      #F4F5FF;
+  --c-surface:  #ECEEFF;
+  --c-border:   rgba(67,24,209,0.13);
+  --c-muted:    #7880A8;
+  --c-red:      #E8365D;
+  --c-green:    #18C96A;
+  --c-amber:    #F5A623;
+  --r-sm: 6px; --r-md: 12px; --r-lg: 20px; --r-xl: 28px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--c-off);
+  color: var(--c-ink);
+  min-height: 100vh;
+}
+
+/* ════════════════════════════════════
+   FOND DÉCORATIF — orbs
+════════════════════════════════════ */
+.bg-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.orb-1 {
+  width: 480px; height: 480px;
+  background: radial-gradient(circle, rgba(35,70,245,0.12), transparent 70%);
+  top: -120px; left: -120px;
+}
+
+.orb-2 {
+  width: 380px; height: 380px;
+  background: radial-gradient(circle, rgba(123,47,239,0.1), transparent 70%);
+  bottom: -80px; right: -80px;
+}
+
+/* ════════════════════════════════════
+   LAYOUT
+════════════════════════════════════ */
+.page-wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
+}
+
+/* ════════════════════════════════════
+   TOP BAR
+════════════════════════════════════ */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  border-bottom: 1px solid var(--c-border);
+  margin-bottom: 2.5rem;
+}
+
+.logo-text {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  background: linear-gradient(110deg, var(--c-blue), var(--c-violet));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.back-link {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--c-muted);
+  text-decoration: none;
+  padding: 6px 14px;
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-sm);
+  background: var(--c-white);
+  transition: color 0.15s, border-color 0.15s;
+}
+.back-link:hover { color: var(--c-blue); border-color: rgba(35,70,245,0.3); }
+
+/* ════════════════════════════════════
+   TICKET PRINCIPAL
+════════════════════════════════════ */
+.ticket-wrapper {
+  display: flex;
+  align-items: stretch;
+  background: var(--c-white);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  box-shadow:
+    0 2px 0 var(--c-border),
+    0 16px 56px rgba(35,70,245,0.1);
+  animation: fadeUp 0.5s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Bande colorée haut du ticket */
+.ticket-wrapper::before {
+  content: '';
+  position: absolute;
+  display: none; /* géré via ticket-body */
+}
+
+/* ── Corps infos ── */
+.ticket-body {
+  flex: 1;
+  padding: 2rem 2rem 2rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  /* Bande couleur en haut */
+  border-top: 4px solid transparent;
+  border-image: linear-gradient(90deg, var(--c-blue), var(--c-violet)) 1;
+}
+
+/* Badge "Billet électronique" */
+.ticket-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-violet);
+  background: rgba(123,47,239,0.09);
+  border: 1px solid rgba(123,47,239,0.18);
+  padding: 4px 12px;
+  border-radius: 999px;
+  width: fit-content;
+  margin-bottom: 1rem;
+}
+
+/* Titre événement */
+.event-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px;
+  letter-spacing: -0.03em;
+  color: var(--c-ink);
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+
+/* Grille infos */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 16px;
+  margin-bottom: 1.5rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.info-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.info-item > div {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.info-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+.info-value {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--c-ink);
+}
+
+/* Barre code billet */
+.ticket-code-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: var(--r-md);
+  background: var(--c-off);
+  border: 1px solid var(--c-border);
+  margin-top: auto;
+  flex-wrap: wrap;
+}
+
+.code-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  flex-shrink: 0;
+}
+
+.code-value {
+  font-family: 'DM Mono', 'Courier New', monospace;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--c-blue);
+  letter-spacing: 0.05em;
+  flex: 1;
+}
+
+/* Badges statut */
+.statut-badge {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+.badge-actif {
+  background: rgba(35,70,245,0.1);
+  color: var(--c-blue);
+  border: 1px solid rgba(35,70,245,0.2);
+}
+
+.badge-valide {
+  background: rgba(24,201,106,0.1);
+  color: var(--c-green);
+  border: 1px solid rgba(24,201,106,0.25);
+}
+
+/* ── Séparateur perforé ── */
+.ticket-separator {
+  width: 1px;
+  background: var(--c-border);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.sep-line {
+  flex: 1;
+  width: 1px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--c-border) 0px,
+    var(--c-border) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+}
+
+.sep-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--c-off);
+  border: 1px solid var(--c-border);
+  flex-shrink: 0;
+  position: relative;
+}
+
+.sep-top { margin-top: -10px; }
+.sep-bot { margin-bottom: -10px; }
+
+/* ── QR Code ── */
+.ticket-qr {
+  width: 220px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 2rem 1.75rem;
+}
+
+.qr-frame {
+  width: 160px;
+  height: 160px;
+  padding: 10px;
+  background: var(--c-white);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-md);
+  box-shadow: 0 4px 20px rgba(35,70,245,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  border-radius: 4px;
+}
+
+.qr-hint {
+  font-size: 12px;
+  color: var(--c-muted);
+  text-align: center;
+  line-height: 1.5;
+}
+
+.btn-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--c-blue);
+  text-decoration: none;
+  padding: 7px 16px;
+  border: 1px solid rgba(35,70,245,0.25);
+  border-radius: var(--r-sm);
+  background: rgba(35,70,245,0.05);
+  transition: background 0.15s, border-color 0.15s;
+}
+.btn-download:hover { background: rgba(35,70,245,0.1); border-color: rgba(35,70,245,0.4); }
+
+/* ════════════════════════════════════
+   BARRE D'ACTIONS
+════════════════════════════════════ */
+.actions-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 1.75rem;
+  flex-wrap: wrap;
+}
+
+.btn-print {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border: none;
+  border-radius: var(--r-md);
+  background: linear-gradient(135deg, var(--c-blue), var(--c-violet));
+  color: var(--c-white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(35,70,245,0.28);
+  transition: opacity 0.15s, transform 0.15s;
+}
+.btn-print:hover { opacity: 0.88; transform: translateY(-1px); }
+
+.btn-retour {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--c-muted);
+  text-decoration: none;
+  padding: 10px 18px;
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-md);
+  background: var(--c-white);
+  transition: color 0.15s, border-color 0.15s;
+}
+.btn-retour:hover { color: var(--c-blue); border-color: rgba(35,70,245,0.3); }
+
+/* ════════════════════════════════════
+   SCANNER PAGE
+════════════════════════════════════ */
+body.scanner-page { background: var(--c-off); }
+
+.scanner-wrapper {
+  max-width: 560px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  animation: fadeUp 0.45s ease both;
+}
+
+.scanner-header { text-align: center; margin-bottom: 0.5rem; }
+
+.scanner-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 30px;
+  letter-spacing: -0.03em;
+  color: var(--c-ink);
+  margin-bottom: 6px;
+}
+
+.scanner-subtitle {
+  font-size: 14px;
+  color: var(--c-muted);
+  line-height: 1.5;
+}
+
+/* Formulaire scan */
+.scan-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 16px;
+  font-size: 16px;
+  pointer-events: none;
+}
+
+.scan-input {
+  width: 100%;
+  height: 52px;
+  padding: 0 18px 0 48px;
+  font-family: 'DM Mono', monospace;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-md);
+  background: var(--c-white);
+  color: var(--c-ink);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.scan-input:focus {
+  border-color: var(--c-blue);
+  box-shadow: 0 0 0 4px rgba(35,70,245,0.1);
+}
+
+.scan-input::placeholder { color: var(--c-lavender); }
+
+.btn-scan {
+  height: 50px;
+  border: none;
+  border-radius: var(--r-md);
+  background: linear-gradient(135deg, var(--c-blue), var(--c-violet));
+  color: var(--c-white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 6px 24px rgba(35,70,245,0.3);
+  transition: opacity 0.15s, transform 0.15s;
+}
+.btn-scan:hover { opacity: 0.9; transform: translateY(-2px); }
+.btn-scan:active { transform: scale(0.98); }
+
+/* ── Cartes résultat ── */
+.result-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 1.5rem;
+  border-radius: var(--r-xl);
+  border: 1.5px solid transparent;
+  animation: fadeUp 0.35s ease both;
+}
+
+.result-icon { font-size: 32px; flex-shrink: 0; }
+
+.result-content { flex: 1; }
+
+.result-content h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+
+.result-event {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.result-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.result-details span {
+  font-size: 13px;
+  color: inherit;
+  opacity: 0.8;
+}
+
+/* Succès */
+.result-success {
+  background: rgba(24,201,106,0.06);
+  border-color: rgba(24,201,106,0.3);
+  color: #0a4a24;
+}
+.result-success h2 { color: #0b5e2e; }
+
+/* Déjà validé */
+.result-warning {
+  background: rgba(245,166,35,0.08);
+  border-color: rgba(245,166,35,0.35);
+  color: #5a3e00;
+}
+.result-warning h2 { color: #6b4900; }
+
+/* Erreur */
+.result-error {
+  background: rgba(232,54,93,0.07);
+  border-color: rgba(232,54,93,0.28);
+  color: #6e0f24;
+}
+.result-error h2 { color: #7a0e25; }
+
+/* ── Conseil ── */
+.scanner-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: var(--r-md);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+}
+
+.tip-icon { font-size: 18px; flex-shrink: 0; }
+
+.scanner-tip p {
+  font-size: 13px;
+  color: var(--c-muted);
+  line-height: 1.6;
+}
+
+kbd {
+  display: inline-block;
+  padding: 1px 6px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  border: 1px solid var(--c-border);
+  border-radius: 4px;
+  background: var(--c-white);
+  color: var(--c-ink);
+  box-shadow: 0 1px 0 var(--c-border);
+}
+
+/* ════════════════════════════════════
+   PRINT
+════════════════════════════════════ */
+@media print {
+  .top-bar, .actions-bar, .bg-orb { display: none !important; }
+  body { background: white; }
+  .ticket-wrapper {
+    box-shadow: none;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  .page-wrapper { padding: 1rem; }
+}
+
+/* ════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════ */
+@media (max-width: 700px) {
+  .ticket-wrapper {
+    flex-direction: column;
+  }
+  .ticket-separator {
+    width: 100%;
+    height: 1px;
+    flex-direction: row;
+  }
+  .sep-line {
+    height: 1px;
+    background: repeating-linear-gradient(
+      to right,
+      var(--c-border) 0px,
+      var(--c-border) 6px,
+      transparent 6px,
+      transparent 12px
+    );
+  }
+  .sep-top { margin-top: 0; margin-left: -10px; }
+  .sep-bot { margin-bottom: 0; margin-right: -10px; }
+  .ticket-qr { width: 100%; border-top: 1px dashed var(--c-border); }
+  .ticket-body { padding: 1.5rem; border-top-width: 4px; }
+  .info-grid { grid-template-columns: 1fr; }
+}

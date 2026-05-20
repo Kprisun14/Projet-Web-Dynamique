@@ -7,7 +7,7 @@ if (!isset($_SESSION["role"]) || ($_SESSION["role"] !== "organisateur" && $_SESS
 }
 
 try {
-    $bdd = new PDO("mysql:host=localhost;dbname=projet2526;charset=utf8", "root", "root");
+    $bdd = new PDO("mysql:host=localhost;dbname=projet2526;charset=utf8", "root", "");
     $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (Exception $e) {
     die("Erreur de connexion : " . $e->getMessage());
@@ -43,13 +43,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $imagePath = $cheminImage;
     }
 
+    // ON AJOUTE 'organisateur_id' à la fin de la liste des colonnes
     $requete = $bdd->prepare("
         INSERT INTO evenements 
-        (titre, description, date_evenement, heure_evenement, lieu, categorie, association, prix, places_max, image_evenement)
+        (titre, description, date_evenement, heure_evenement, lieu, categorie, association, prix, places_max, image_evenement, organisateur_id)
         VALUES
-        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ");
 
+    // ON AJOUTE '$_SESSION['utilisateur_id']' à la fin du tableau d'exécution
     $requete->execute([
         $titre,
         $description,
@@ -60,7 +62,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $association,
         $prix,
         $places_max,
-        $imagePath
+        $imagePath,
+        $_SESSION['utilisateur_id'] // <-- C'est cette ligne magique qui fait le lien !
     ]);
 
     $message = "Événement créé avec succès.";

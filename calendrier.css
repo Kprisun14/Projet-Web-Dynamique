@@ -1,0 +1,161 @@
+/* =============================================
+   calendrier.css — OmnesEvent
+   Thème : Cohérence avec profil.css
+   ============================================= */
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #f7f8fc;
+    margin: 0;
+    color: #0d0f2b;
+}
+
+/* Navbar simplifiée pour matcher */
+.menu-categories {
+    display: flex; align-items: center; gap: 1.5rem; padding: 0 2.5rem;
+    height: 64px; background: #ffffff;
+    border-bottom: 1px solid rgba(45, 58, 219, 0.1);
+}
+.dropbtn { text-decoration: none; color: #5a5f8a; font-weight: 600; font-size: 14px; }
+.dropbtn:hover { color: #2d3adb; }
+
+/* Conteneur principal */
+.calendrier-container {
+    max-width: 1000px;
+    margin: 3rem auto;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 6px 24px rgba(45, 58, 219, 0.1);
+    padding: 2rem;
+    border: 1px solid rgba(45, 58, 219, 0.08);
+}
+
+/* En-tête : Mois Suivant / Précédent */
+.cal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.cal-header h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 28px;
+    margin: 0;
+    color: #1a1f6e;
+}
+
+.cal-btn {
+    padding: 10px 20px;
+    background: #e8eeff;
+    color: #2d3adb;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.cal-btn:hover {
+    background: #2d3adb;
+    color: #ffffff;
+}
+
+/* Grille CSS du Calendrier */
+.cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+/* Jours de la semaine (Lun, Mar...) */
+.cal-day-name {
+    text-align: center;
+    font-weight: 700;
+    color: #5a5f8a;
+    font-size: 13px;
+    text-transform: uppercase;
+    padding-bottom: 10px;
+}
+
+/* Cases des jours */
+.cal-cell {
+    background: #f7f8fc;
+    border: 1px solid rgba(45, 58, 219, 0.05);
+    border-radius: 12px;
+    min-height: 120px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    transition: background 0.2s;
+}
+
+.cal-cell:hover:not(.empty) {
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(45, 58, 219, 0.08);
+    border-color: #2d3adb;
+}
+
+.cal-cell.empty {
+    background: transparent;
+    border-color: transparent;
+}
+
+/* Jour d'aujourd'hui */
+.cal-cell.today {
+    background: #ede8ff;
+    border: 1.5px solid #6c2bd9;
+}
+.cal-cell.today .cal-date {
+    background: #6c2bd9;
+    color: #ffffff;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+/* Le chiffre du jour */
+.cal-date {
+    font-weight: 700;
+    font-size: 16px;
+    color: #1a1f6e;
+    align-self: flex-end;
+    margin-bottom: 8px;
+}
+
+/* Badges d'événements */
+.cal-events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.cal-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 8px;
+    border-radius: 6px;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: transform 0.2s;
+}
+
+.cal-badge:hover {
+    transform: translateY(-2px) scale(1.02);
+}
+
+/* Couleurs dynamiques selon la catégorie */
+.cat-sport {
+    background: #def7ec; color: #03543f; border: 1px solid #bcf0da;
+}
+.cat-culture {
+    background: #e8eeff; color: #2d3adb; border: 1px solid #c2d5ff;
+}
+.cat-soiree {
+    background: #fde8e8; color: #9b1c1c; border: 1px solid #f8b4b4;
+}
