@@ -7,10 +7,11 @@ if (!isset($_SESSION["utilisateur_id"])) {
 }
 
 try {
+    // Ajout du port 3306 pour correspondre aux autres fichiers
     $bdd = new PDO(
-        "mysql:host=localhost;dbname=projet2526;charset=utf8",
+        "mysql:host=localhost;port=3306;dbname=projet2526;charset=utf8",
         "root",
-        "root"
+        ""
     );
 
     $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -80,66 +81,71 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <head>
     <meta charset="UTF-8">
-    <title>Rôle</title>
+    <link rel="stylesheet" href="role.css">
+    <title>Gestion du Rôle - OmnesEvent</title>
 </head>
 
 <body>
 
-    <header>
-        <a href="reglages.php">Retour aux réglages</a>
-    </header>
+    <div class="role-container">
 
-    <h1>Gestion du rôle</h1>
+        <header style="margin-bottom: 25px;">
+            <a href="reglages.php" style="color: var(--c-blue); font-weight: 700; text-decoration: none; font-size: 14px;">
+                ← Retour aux réglages
+            </a>
+        </header>
 
-    <p>
-        Votre rôle actuel :
-        <strong><?php echo $_SESSION["role"]; ?></strong>
-    </p>
+        <h1>Gestion du rôle</h1>
 
-    <?php
-    if ($message != "") {
-        echo "<p>$message</p>";
-    }
-    ?>
+        <p>
+            Votre rôle actuel :
+            <strong><?php echo htmlspecialchars($_SESSION["role"]); ?></strong>
+        </p>
 
-    <h2>Redevenir participant</h2>
+        <?php
+        if ($message != "") {
+            // Le CSS va automatiquement repérer ce paragraphe et en faire un bel encart d'information
+            echo "<p>" . htmlspecialchars($message) . "</p>";
+        }
+        ?>
 
-    <form method="post" action="role.php">
-        <input type="hidden" name="role_demande" value="participant">
+        <h2>Redevenir participant</h2>
 
-        <button type="submit">
-            Redevenir participant
-        </button>
-    </form>
+        <form method="post" action="role.php">
+            <input type="hidden" name="role_demande" value="participant">
 
-    <br><br>
+            <button type="submit">
+                Redevenir participant
+            </button>
+        </form>
 
-    <h2>Devenir organisateur</h2>
+        <h2>Devenir organisateur</h2>
 
-    <form method="post" action="role.php">
-        <input type="hidden" name="role_demande" value="organisateur">
+        <form method="post" action="role.php">
+            <input type="hidden" name="role_demande" value="organisateur">
 
-        <label>Code organisateur :</label><br>
-        <input type="password" name="code" required><br><br>
+            <label>Code organisateur :</label>
+            <input type="password" name="code" required>
 
-        <button type="submit">
-            Devenir organisateur
-        </button>
-    </form>
+            <button type="submit">
+                Devenir organisateur
+            </button>
+        </form>
 
-    <br><br>
+        <h2>Devenir administrateur</h2>
 
-    <h2>Devenir administrateur</h2>
+        <form method="post" action="role.php">
+            <input type="hidden" name="role_demande" value="administrateur">
 
-    <form method="post" action="role.php">
-        <input type="hidden" name="role_demande" value="administrateur">
+            <label>Code administrateur :</label>
+            <input type="password" name="code" required>
 
-        <label>Code administrateur :</label><br>
-        <input type="password" name="code" required><br><br>
+            <button type="submit">
+                Devenir administrateur
+            </button>
+        </form>
 
-        <button type="submit">
-            Devenir administrateur
-        </button>
-    </form>
+    </div>
+
 </body>
 </html>

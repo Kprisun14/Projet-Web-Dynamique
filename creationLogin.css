@@ -1,0 +1,151 @@
+/* ============================================================
+   creation_login.css — OmnesEvent · Inscription
+   Scope : creationLogin.php
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
+
+:root {
+  --c-ink:      #0a0c1e;
+  --c-navy:     #111540;
+  --c-blue:     #2346F5;
+  --c-indigo:   #4318D1;
+  --c-violet:   #7B2FEF;
+  --c-white:    #FFFFFF;
+  --c-off:      #F4F5FF;
+  --c-surface:  #ECEEFF;
+  --c-border:   rgba(67,24,209,0.13);
+  --c-muted:    #7880A8;
+  --c-red:      #E8365D;
+  --r-md: 12px; --r-lg: 20px;
+  --shadow-card: 0 2px 0 var(--c-border), 0 12px 40px rgba(35,70,245,0.08);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background-color: var(--c-off);
+  color: var(--c-ink);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.auth-box {
+  background: var(--c-white);
+  max-width: 520px; /* Plus large pour l'inscription */
+  width: 100%;
+  padding: 2.5rem;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--c-border);
+  box-shadow: var(--shadow-card);
+}
+
+.auth-box h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 32px;
+  color: var(--c-navy);
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.auth-box h2 {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--c-muted);
+  text-align: center;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.auth-box p[style*="color:red"] {
+  background: rgba(232, 54, 93, 0.08) !important;
+  color: var(--c-red) !important;
+  padding: 12px;
+  border-radius: var(--r-md);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(232, 54, 93, 0.15);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+label {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--c-navy);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: -0.65rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 13px 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--c-ink);
+  background-color: var(--c-off);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-md);
+  outline: none;
+  transition: border-color 0.18s, background-color 0.18s;
+}
+
+input:focus {
+  background-color: var(--c-white);
+  border-color: var(--c-blue);
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 15px;
+  margin-top: 0.75rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--c-white);
+  background: linear-gradient(110deg, var(--c-blue), var(--c-violet));
+  border: none;
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+button[type="submit"]:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.auth-box p:last-of-type {
+  margin-top: 1.75rem;
+  font-size: 13.5px;
+  color: var(--c-muted);
+  text-align: center;
+}
+
+.auth-box a {
+  color: var(--c-blue);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-box a:hover {
+  text-decoration: underline;
+}
